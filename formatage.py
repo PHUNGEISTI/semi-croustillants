@@ -31,10 +31,3 @@ wonderframe=pd.DataFrame()
 wonderframe['Semaines']=semaines
 wonderframe['Livraisons réelles']=livraisons
 wonderframe['Historique']=caraibes
-
-## MODELE LINEAIRE
-from sklearn import linear_model
-regr=linear_model.LinearRegression()
-regr.fit(list(wonderframe['Historique'].values), list(wonderframe['Livraisons réelles'].values))
-predicto=regr.predict(list(wonderframe['Historique'].values))
-ecartmoy=sum(abs(list(wonderframe['Livraisons réelles'].values)-predicto))/len(predicto)
