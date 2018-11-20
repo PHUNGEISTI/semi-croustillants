@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct 25 18:22:59 2018
-
-@author: Admin
+Code permettant d'importer des données xlsl en format DataFrame
 """
 
 import pandas as pd
