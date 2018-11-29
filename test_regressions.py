@@ -3,6 +3,7 @@
 Test des différents modèles linéaires
 Nécessite le wonderframe de formatage.py
 """
+from formatage import wonderframe
 
 ## MODELE LINEAIRE
 from sklearn import linear_model
