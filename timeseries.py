@@ -5,6 +5,7 @@ Time series
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
 import math
 import numpy as np
+from formatage import wonderframe
 
 turfu=[]
 for i in range(10,len(wonderframe)):
