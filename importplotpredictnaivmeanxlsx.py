@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
+from sklearn import linear_model
 from math import sqrt
 
 df = pd.read_excel('2018-19ProjetJohnsonElectricArbitrageFeuilledecalcul.xlsx',sheet_name='pivot demande')
@@ -38,27 +39,40 @@ wonderframe['Semaines']=semaines
 wonderframe['Livraisons réelles']=livraisons
 wonderframe['Historique']=caraibes
 
-r= list(range(1,len(semaines)+1))
-for i in range(len(semaines)):
-        for j in range(len(caraibes[i])):
-           #plt.plot(r[i],caraibes[i][j],'ro')
-           plt.scatter(r[i],caraibes[i][j],s=2)
-#plt.figure(figsize=(10,10))
-#plt.rcParams["figure.figsize"] = [16,9]
-plt.ylabel('Historique')
-plt.xlabel('Semaines')
-plt.show()
 
-predictnaiv=[]
-for i in range(len(caraibes)):
-    predictnaiv.append((caraibes[i][-1]))
-errquadnaiv=sqrt(mean_squared_error(predictnaiv,livraisons)) 
+#predictnaiv=[]
+#for i in range(len(caraibes)):
+#    predictnaiv.append((caraibes[i][-1]))
+#errquadnaiv=sqrt(mean_squared_error(predictnaiv,livraisons)) 
 
 predict=[]
 for i in range(len(caraibes)):
     predict.append(np.mean(caraibes[i][-i-1:]))
-errquadmoy=sqrt(mean_squared_error(predict,livraisons))    
+errquadmoy=sqrt(mean_squared_error(predict,livraisons))
 
+regr=linear_model.Ridge()
+regr.fit(caraibes, livraisons)
+predictregr=regr.predict(caraibes)
+ecartmoyregr=sqrt(mean_squared_error(livraisons, predictregr))    
+
+r= list(range(1,len(semaines)+1))
+#Scaraibes=[]
+for i in range(len(semaines)):
+        for j in range(len(caraibes[i])):
+            #Scaraibes.append(caraibes[i][j])
+           plt.scatter(r[i],caraibes[i][j],s=2, c="green")          
+#plt.figure(figsize=(10,10))
+#plt.rcParams["figure.figsize"] = [16,9]  
+plt.plot(r,livraisons,label="Livraisons réelles")
+#plt.plot(r,predictnaiv,label="prédiction naive")
+plt.plot(r,predict,label="prédiction moyenne")
+plt.plot(r,predictregr,label="prédiction rég. lin.")
+plt.ylabel("Historique des Prévisions")
+plt.xlabel('Semaines')
+plt.title("Première vue d'ensemble")
+plt.legend()
+plt.show()
+    
   
 
 
