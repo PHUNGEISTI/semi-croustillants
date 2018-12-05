@@ -55,6 +55,15 @@ regr.fit(caraibes, livraisons)
 predictregr=regr.predict(caraibes)
 ecartmoyregr=sqrt(mean_squared_error(livraisons, predictregr))    
 
+#Exponential Moving Average
+ema=[]
+for i in range(len(caraibes)):
+    ema.append(pd.DataFrame(caraibes[i]).ewm(alpha=0.045,adjust=False).mean())
+predictewma=[]
+for i in range(len(caraibes)):
+    predictewma.append(ema[i].iloc[35,0])
+errquadmewma=sqrt(mean_squared_error(predictewma,livraisons))
+
 r= list(range(1,len(semaines)+1))
 #Scaraibes=[]
 for i in range(len(semaines)):
@@ -66,6 +75,7 @@ for i in range(len(semaines)):
 plt.plot(r,livraisons,label="Livraisons réelles")
 #plt.plot(r,predictnaiv,label="prédiction naive")
 plt.plot(r,predict,label="prédiction moyenne")
+plt.plot(r,predictewma,label="prédiction exp.moving.average")
 plt.plot(r,predictregr,label="prédiction rég. lin.")
 plt.ylabel("Historique des Prévisions")
 plt.xlabel('Semaines')
