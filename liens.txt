@@ -1,2 +1,1 @@
-https://www.datacamp.com/community/tutorials/lstm-python-stock-market
-https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
+https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/ !!!!!
