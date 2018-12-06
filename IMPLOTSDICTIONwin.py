@@ -76,9 +76,10 @@ resultat = sm.tsa.stattools.adfuller(wonderframe['Livraisons réelles'])
 plt.show()
 modelholter = ExponentialSmoothing(listlivraison,seasonal_periods=35,trend='add',seasonal='add').fit()
 predictwinter = modelholter.forecast(len(listlivraison))
-errquadwinter=sqrt(mean_squared_error(predictwinter,livraisons))
+
 #PLOTING
 r= list(range(1,len(semaines)+1))
+rw= list(range(1,len(semaines)+2))
 for i in range(len(semaines)):
         for j in range(len(caraibes[i])):
             #Scaraibes.append(caraibes[i][j])
@@ -87,7 +88,7 @@ for i in range(len(semaines)):
 #plt.rcParams["figure.figsize"] = [16,9]  
 plt.figure()     
 plt.plot(r,livraisons,label="Livraisons réelles")
-plt.plot(r,predictwinter,label="prédiction holtwinter")
+#plt.plot(rw,predictwinter,label="prédiction holtwinter")
 #plt.plot(r,predictnaiv,label="prédiction naive")
 plt.plot(r,predict,label="prédiction moyenne")
 plt.plot(r,predictewma,label="prédiction exp.moving.average")
@@ -97,8 +98,14 @@ plt.xlabel('Semaines')
 plt.title("Première vue d'ensemble")
 plt.legend()
 plt.show()
-    
-  
+
+livraisons=np.insert(livraisons,35,livraisons[35])
+predictwinter=np.insert(predictwinter,0,predictwinter[0]) 
+errquadwinter=sqrt(mean_squared_error(predictwinter,livraisons))   
+plt.figure()
+plt.plot(rw,livraisons,label="Livraisons réelles")
+plt.plot(rw,predictwinter,label="prédiction holtwinter")
+plt.show() 
 
 
 
