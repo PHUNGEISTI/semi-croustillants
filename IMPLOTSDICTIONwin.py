@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 from sklearn import linear_model
 from math import sqrt
+from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
+import statsmodels.api as sm
 
 df = pd.read_excel('2018-19ProjetJohnsonElectricArbitrageFeuilledecalcul.xlsx',sheet_name='pivot demande')
 print(df)
@@ -64,15 +66,28 @@ for i in range(len(caraibes)):
     predictewma.append(ema[i].iloc[35,0])
 errquadmewma=sqrt(mean_squared_error(predictewma,livraisons))
 
+
+
+#Holter's Winter
+listlivraison=livraisons.tolist()
+
+sm.tsa.seasonal_decompose(listlivraison,freq=5,model='additive').plot()
+resultat = sm.tsa.stattools.adfuller(wonderframe['Livraisons réelles'])
+plt.show()
+modelholter = ExponentialSmoothing(listlivraison,seasonal_periods=35,trend='add',seasonal='add').fit()
+predictwinter = modelholter.forecast(len(listlivraison))
+errquadwinter=sqrt(mean_squared_error(predictwinter,livraisons))
+#PLOTING
 r= list(range(1,len(semaines)+1))
-#Scaraibes=[]
 for i in range(len(semaines)):
         for j in range(len(caraibes[i])):
             #Scaraibes.append(caraibes[i][j])
            plt.scatter(r[i],caraibes[i][j],s=2, c="green")          
 #plt.figure(figsize=(10,10))
 #plt.rcParams["figure.figsize"] = [16,9]  
+plt.figure()     
 plt.plot(r,livraisons,label="Livraisons réelles")
+plt.plot(r,predictwinter,label="prédiction holtwinter")
 #plt.plot(r,predictnaiv,label="prédiction naive")
 plt.plot(r,predict,label="prédiction moyenne")
 plt.plot(r,predictewma,label="prédiction exp.moving.average")
