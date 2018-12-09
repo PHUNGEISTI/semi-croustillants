@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <title>Arbitrages des prévisions clients de Johnson Electric et leurs Fiabilités</title>
   
-  
-  
+    <link rel="shortcut icon" href="{{ url_for('static',filename='/jlicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 
 <body>
  
-		<h1><span>Arbitrages</span> <span>des prévisions clients</span> de <span>Johnson Electric</span> ainsi que leurs <span>fiabilités</span></h1>
+		<h1><span>Arbitrages</span> des<span> prévisions clients</span> de <span>Johnson Electric</span> ainsi que leurs <span>fiabilités</span></h1>
         <h1 style="margin-left:100px; margin-top:90px; float:left; position:absolute; font-weight:bold;"> Charger le fichier excel et cliquer sur appliquer</h1>
         <Form action="/telechargerlexcel" method="POST" enctype="multipart/form-data">
         <div style="margin-left:700px; margin-top:150px; float:left; position:absolute;">
@@ -23,12 +22,15 @@
         <img style="margin-left:760px; margin-top:100px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
 
         <div id="rcorners2" style="margin-left:170px; margin-top:100px; float:left; position:absolute;">
-        <br><br>
-        L'erreur1<br><br>
-        L'erreur 2<br><br>
-        l'err3<br><br>
-        err4<br><br>
-        </div>	
+        <br> <h1><span>Ecart moyen entre la prédiction calculée et la valeur exacte :</span></h1> 
+        <br><br><br><br>
+        - Estimation à la Moyenne : {{err1}}<br><br>
+        - Estimation à la régression linéaire (Ridge) : {{err2}}<br><br>
+        - Estimation à la Moyenne mobile pondérée : {{err3}}<br><br>
+        - Estimation à la méthode Holt Winter : {{err4}}<br><br><br>
+        <h1>La Meilleure Estimation est : <span></span></h1></div>
+        
+        
 
 		
   		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

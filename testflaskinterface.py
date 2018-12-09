@@ -62,12 +62,12 @@ def index():
     predict=[]
     for i in range(len(caraibes)):
         predict.append(np.mean(caraibes[i][-i-1:]))
-    errquadmoy=sqrt(mean_squared_error(predict,livraisons))
+    errquadmoy=round(sqrt(mean_squared_error(predict,livraisons)),2)
     
     regr=linear_model.Ridge()
     regr.fit(caraibes, livraisons)
     predictregr=regr.predict(caraibes)
-    ecartmoyregr=sqrt(mean_squared_error(livraisons, predictregr))    
+    ecartmoyregr=round(sqrt(mean_squared_error(livraisons, predictregr)),2)    
     
     #Exponential Moving Average
     ema=[]
@@ -76,7 +76,7 @@ def index():
     predictewma=[]
     for i in range(len(caraibes)):
         predictewma.append(ema[i].iloc[35,0])
-    errquadmewma=sqrt(mean_squared_error(predictewma,livraisons))
+    errquadmewma=round(sqrt(mean_squared_error(predictewma,livraisons)),2)
     
     
     
@@ -120,7 +120,7 @@ def index():
 #    img2 = BytesIO() 
     livraisons=np.insert(livraisons,35,livraisons[35])
     predictwinter=np.insert(predictwinter,0,predictwinter[0]) 
-    errquadwinter=sqrt(mean_squared_error(predictwinter,livraisons))   
+    errquadwinter=round(sqrt(mean_squared_error(predictwinter,livraisons)),2)   
 #    plt.figure()
 #    plt.plot(rw,livraisons,label="Livraisons réelles")
 #    plt.plot(rw,predictwinter,label="prédiction holtwinter")
@@ -130,7 +130,7 @@ def index():
     
 #    plot_data2 = quote(base64.b64encode(img2.read()).decode())
 
-    return render_template("index.html",plot_url=plot_data,err1=errquadmoy,err2=ecartmoyregr,err3=errquadmewma)
+    return render_template("index.html",plot_url=plot_data,err1=errquadmoy,err2=ecartmoyregr,err3=errquadmewma,err4=errquadwinter)
 
 @app.route('/telechargerlexcel', methods = ['GET', 'POST'])
 def upload_file():
