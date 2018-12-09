@@ -18,10 +18,10 @@ def predireRidge(datas,n):
     histo=list(datas['Historique'].values[:n-1])
     livpass=list(datas['Livraisons réelles'].values[:n-1])
     apredire=list(datas['Historique'].values[n])
-    r=ridgePredict(histo,livpass,apredire)
+    r=modeleRidge(histo,livpass,apredire)
     return r
 
-def ridgePredict(histo, livpass, apredire):
+def modeleRidge(histo, livpass, apredire):
     """Prédit via Ridge
     
     Arguments :
@@ -34,8 +34,8 @@ def ridgePredict(histo, livpass, apredire):
     predicto=regr.predict([apredire])[0]
     return predicto
 
-def fullsimul(datas,mini):
-    """Lance une simulation avec un minimum de x semaines
+def fullSimul(datas,mini):
+    """Lance une simulation avec un minimum de x semaines, renvoie l'écart moyen
     
     Arguments :
         datas : données à traiter (DataFrame)
@@ -56,6 +56,6 @@ def plotError(datas):
     """
     em=[]
     for i in range(2,35):
-        em.append(fullsimul(datas,i))
+        em.append(fullSimul(datas,i))
     plt.plot(em)
     plt.show()
