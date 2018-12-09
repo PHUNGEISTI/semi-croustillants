@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Arbitrage des prévisions clients de Johnson Electric et fiabilité</title>
+  
+    <link rel="shortcut icon" href="{{ url_for('static',filename='jlicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+
+<body>
+ 
+		<h1><span>Arbitrage</span> <span>des prévisions clients</span> de <span>Johnson Electric</span> et <span>fiabilité</span></h1>
+        <form action="/miniup" method="POST">
+            <div style="margin-left:700px; margin-top:50px; float:left; position:absolute; font-family: 'Open Sans', Helvetica;">
+                Nombre minimum de semaines d'historique : <br /><input type="number" name="mini" min="2" max="{{maxhist}}">
+            </div>
+            <button class="LoadButton" style="margin-left:700px; margin-top:100px; float:left; position:absolute;" type="submit" value="Submit">Réactualiser</button>
+        </form>
+        <br />
+        <br />
+        <img style="margin-right:760px; margin-top:100px; float:right; position:absolute;" src="data:image/png;base64, {{ plot2_url }}">
+        <img style="margin-left:760px; margin-top:100px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
+        
+        <div style="margin-top:550px">
+        <table>
+        <tr>
+            <th>Semaine</th>
+            <script>var livr = {{liv | tojson}}
+            for (var i = 0; i < livr.length; i++) {
+            document.writeln('<td>'+i+'</td>')
+        }
+        </script>
+        </tr>
+        <tr>
+            <th>Livraisons réelles</th>
+        <script>var livr = {{liv | tojson}}
+        for (var i = 0; i < livr.length; i++) {
+            document.writeln('<td>'+livr[i]+'</td>')
+        }
+        </script> </tr><br />
+        <th>Prédictions</th>  <script>var predi = {{pred | tojson}}
+        for (var i = 0; i < livr.length; i++) {
+            if (i >= livr.length-predi.length) {
+            document.writeln('<td>'+predi[i-(livr.length-predi.length)]+'</td>')
+        } else {
+            document.writeln('<td></td>')
+        }
+        }
+        </script> <br />
+        </table>
+        </div>
+        	
+  		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+	    <script src="{{ url_for('static',filename='index.js') }}"></script>
+	    <script type="text/javascript">
+           
+	   </script>
+</body>
+</html>

@@ -64,7 +64,7 @@ def graphe(mini=31):
     img.seek(0)
     
     plot_data2 = quote(base64.b64encode(img.read()).decode())
-    return render_template("graphe.html",plot_url=plot_data,plot2_url=plot_data2,maxhist=nbsemaines-2,liv=list(livraisons),pred=list(predR))
+    return render_template("graphe.html",plot_url=plot_data,plot2_url=plot_data2,maxhist=nbsemaines-2,liv=list(livraisons),pred=[int(i) for i in predR])
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
