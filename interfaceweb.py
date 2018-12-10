@@ -94,12 +94,13 @@ def mu():
 def graphe(mini=31):
     datas=formaterXLSX()
     
-    
+    mini=mini-1
     img = BytesIO() 
     plt.figure()
     
     nbsemaines=len(datas)
     livraisons=datas['Livraisons réelles'].values
+    nomsem=list(datas['Semaines'].values)
     
     r= list(range(1,nbsemaines+1))
     
@@ -133,7 +134,7 @@ def graphe(mini=31):
     img.seek(0)
     
     plot_data2 = quote(base64.b64encode(img.read()).decode())
-    return render_template("graphe.html",plot_url=plot_data,plot2_url=plot_data2,maxhist=nbsemaines-2,liv=list(livraisons),pred=[int(i) for i in predR])
+    return render_template("graphe.html",plot_url=plot_data,plot2_url=plot_data2,maxhist=nbsemaines,liv=list(livraisons),pred=[int(i) for i in predR],sem=nomsem)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
