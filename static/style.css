@@ -44,7 +44,7 @@ h1 span { color: #4DAF7C; font-weight: 400; }
 	left: 0;
 	padding: 5px;
 }
-#myButton {
+a,#myButton {
 	-moz-box-shadow: 0px 10px 14px -7px #3e7327;
 	-webkit-box-shadow: 0px 10px 14px -7px #3e7327;
 	box-shadow: 0px 10px 14px -7px #3e7327;
@@ -69,7 +69,7 @@ h1 span { color: #4DAF7C; font-weight: 400; }
 	text-decoration:none;
 	text-shadow:0px 1px 0px #5b8a3c;
 }
-#myButton:hover {
+a,#myButton:hover {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #72b352), color-stop(1, #4DAF7C));
 	background:-moz-linear-gradient(top, #72b352 5%, #4DAF7C 100%);
 	background:-webkit-linear-gradient(top, #72b352 5%, #4DAF7C 100%);
@@ -79,11 +79,12 @@ h1 span { color: #4DAF7C; font-weight: 400; }
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#72b352', endColorstr='#4DAF7C',GradientType=0);
 	background-color:#4DAF7C;
 }
-#myButton:active {
+/*
+a,#myButton:active {
 	position:relative;
 	top:1px;
 }
-
+*/
 .LoadButton {
 	-moz-box-shadow: 0px 10px 14px -7px #3e7327;
 	-webkit-box-shadow: 0px 10px 14px -7px #3e7327;
@@ -131,6 +132,34 @@ h1 span { color: #4DAF7C; font-weight: 400; }
     width: 400px;
     height: 435px;  
   }
-table,td,th {
-	border: 1px solid;
-}
+
+  .flat-table {
+	table-layout: fixed;
+	display: block;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 90%;
+	overflow: auto;
+	width: auto;
+  }
+	th {
+   	  table-layout: fixed;
+	  background-color: rgb(112, 196, 105);
+	  color: white;
+	  font-weight: normal;
+	  width: 38px;
+	  height: 38px; 
+	  text-align: center;
+	}
+	td {
+	  table-layout: fixed;
+	  background-color: white;
+	  color: rgb(111, 111, 111);
+	  text-align: center;
+	  width: 38px;
+	  height: 38px;
+	 
+	}
+  
+
+
