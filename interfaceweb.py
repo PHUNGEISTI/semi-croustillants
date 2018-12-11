@@ -22,6 +22,18 @@ from sklearn import linear_model
 from math import sqrt
 from statsmodels.tsa.api import ExponentialSmoothing
 
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template("index.html")
+
+@app.route('/telechargerlexcel', methods = ['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['inputFile']
+        f.save(secure_filename(f.filename))
+        return redirect('/comparaison')
+   
+
 @app.route('/comparaison')
 def cmp():
     datas=formaterXLSX()
@@ -136,19 +148,5 @@ def graphe(mini=31):
     plot_data2 = quote(base64.b64encode(img.read()).decode())
     return render_template("graphe.html",plot_url=plot_data,plot2_url=plot_data2,maxhist=nbsemaines,liv=list(livraisons),pred=[int(i) for i in predR],sem=nomsem)
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    return render_template("index.html")
-
-@app.route('/telechargerlexcel', methods = ['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        f = request.files['inputFile']
-        f.save(secure_filename(f.filename))
-    return redirect('/graphe')
-
-@app.route('/comparer')
-def lancercmp():
-    return render_template("index.html",bcmp='True')
 
 app.run(debug=True,port=8085)
