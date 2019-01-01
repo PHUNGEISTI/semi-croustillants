@@ -1,0 +1,26 @@
+
+progress{
+  width:0%;
+  height:18px;
+  border:0;
+  border-radius:9px;
+  background-color:#f3f3f3;
+}
+/* outter progressbar track外部的进度条轨道 */
+progress::-webkit-progress-bar{
+  background-color: #5cb85c;
+  border-radius:9px;
+}
+/* inner progressbar 内部进度条主体 */
+progress::-webkit-progress-value{
+  background: #000000;
+  border-radius:9px;
+}
+progress::-moz-progress-bar{
+  background-color: #000000;
+  border-radius:9px;
+}
+progress::-moz-progress-value{
+  background: #000000;
+  border-radius:9px;
+}
