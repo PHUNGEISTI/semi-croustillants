@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Arbitrage des prévisions clients de Johnson Electric et leurs fiabilités</title>
-  
+	  	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+		<script src="{{ url_for('static',filename='progressbar2.js') }}"></script>
+		<link rel="stylesheet" href="{{ url_for('static',filename='progressbar.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static',filename='progressbar1.css') }}">
+		<script src="{{ url_for('static',filename='progressbar3.js') }}"></script>
+
     <link rel="shortcut icon" href="{{ url_for('static',filename='jlicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 
 <body>
- 
+		  
+		<div class="preloader-wrap">
+		  <div class="percentage" id="precent"></div>
+		  <div class="loader">
+			<div class="trackbar">
+			  <div class="loadbar"></div>
+			</div>
+			<div class="glow"></div>
+		  </div>
+		</div>
+		
+
+  <progress id="progressbar" value="0" max="100"></progress> 
+
+		
 		<h1><span>Comparaisons</span> des différentes <span>méthodes</span> de<span> prévisions clients</span> de <span>Johnson Electric</span></h1>
 		<div id="debug" style="margin:65px; margin-top:100px;">
         <img style="margin-left:110px; margin-top:90px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
         <span><a style="margin-bottom:10px" href="/">Retour</a>
-        <a style="margin-bottom:10px;margin-left:850px " href="graphe">Voir les prédictions</a></span>
+        <a id="start" style="margin-bottom:10px;margin-left:850px " href="graphe">Voir les prédictions</a></span>
         <div id="rcorners2" style="margin-left:800px; margin-top:50px; float:left; position:absolute;" >
         <br> <h1><span>Ecart moyen entre la prédiction calculée et la valeur exacte :</span></h1> 
         <br><br><br><br><br><br>
@@ -23,10 +43,9 @@
         - Estimation à la Moyenne mobile pondérée : {{err3}}<br><br><br><br>
         - Estimation à la méthode Holt Winter : {{err4}}<br><br></div><br><br>
         
-        
+      
 
 		
-  		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
 	    <script src="{{ url_for('static',filename='index.js') }}"></script>
 	    <script type="text/javascript">
