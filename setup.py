@@ -1,13 +1,14 @@
 """Fichier d'installation de notre script salut.py."""
 #import numpy.core._methods
 #import numpy.lib.format
+import sys
 import os.path
 PYTHON_INSTALL_DIR = os.path.dirname(os.path.dirname(os.__file__))
 os.environ['TCL_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tcl8.6')
 os.environ['TK_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tk8.6')
 
 from cx_Freeze import setup, Executable
-additional_mods = ['numpy.core._methods', 'numpy.lib.format','scipy.sparse.csgraph._validation']
+additional_mods = ['numpy','numpy.core._methods', 'numpy.lib.format','scipy','scipy.sparse.csgraph._validation','multiprocessing','scipy.spatial.ckdtree','X:\Anaconda\Lib\site-packages\mkl_intel_thread.dll']
 
 # On appelle la fonction setup
 setup(
