@@ -20,7 +20,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn import linear_model
 from math import sqrt
-from statsmodels.tsa.api import ExponentialSmoothing
+from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -41,34 +41,40 @@ def cmp():
     livraisons=list(datas['Livraisons réelles'].values)
     semaines=list(datas['Semaines'].values)
 
-    
+    #Average
     predict=[]
     for i in range(len(histo)):
         predict.append(np.mean(histo[i][-i-1:]))
-    errquadmoy=round(sqrt(mean_squared_error(predict,livraisons)),2)
+    errquadmoy=round(sqrt(mean_squared_error(predict,livraisons)))
     
+    #Regression linéaire de Ridge
     regr=linear_model.Ridge()
     regr.fit(histo, livraisons)
     predictregr=regr.predict(histo)
-    ecartmoyregr=round(sqrt(mean_squared_error(livraisons, predictregr)),2)    
+    ecartmoyregr=round(sqrt(mean_squared_error(livraisons, predictregr)))    
     
     #Exponential Moving Average
-    ema=[]
-    for i in range(len(histo)):
-        ema.append(pd.DataFrame(histo[i]).ewm(alpha=0.045,adjust=False).mean())
-    predictewma=[]
-    for i in range(len(histo)):
-        predictewma.append(ema[i].iloc[35,0])
-    errquadmewma=round(sqrt(mean_squared_error(predictewma,livraisons)),2)
-    
+   # ema=[]
+    #for i in range(len(histo)):
+     #   ema.append(pd.DataFrame(histo[i]).ewm(alpha=0.045,adjust=False).mean())
+   # predictewma=[]
+    #for i in range(len(histo)):
+     #   predictewma.append(ema[i].iloc[35,0])
+    modelexp = SimpleExpSmoothing(livraisons).fit()
+    predictewma=modelexp.forecast(len(livraisons))
+    errquadmewma=round(sqrt(mean_squared_error(predictewma,livraisons)))
     
     
     #Holter's Winter
-    listlivraison=livraisons
-    
-    modelholter = ExponentialSmoothing(listlivraison,seasonal_periods=35,trend='add',seasonal='add').fit()
-    predictwinter = modelholter.forecast(len(listlivraison))
 
+    
+    #modelholter = ExponentialSmoothing(listlivraison,seasonal_periods=35,trend='add',seasonal='add').fit()
+    modelholter = ExponentialSmoothing(livraisons,seasonal_periods=35,seasonal='add').fit()
+    predictwinter = modelholter.forecast(len(livraisons))
+    predictwinter2 = predictwinter[:35]
+    livraisons2=livraisons[1:]
+    errquadwinter=round(sqrt(mean_squared_error(predictwinter2,livraisons2))) 
+    
     img = BytesIO() 
     plt.figure()
 
@@ -79,7 +85,8 @@ def cmp():
     plt.plot(r,livraisons,label="Livraisons réelles")
     plt.plot(r,predict,label="Moyenne")
     plt.plot(r,predictewma,label="Exponential moving average")
-    plt.plot(r,predictregr,label="Régression linéaire")
+    plt.plot(r,predictregr,label="Régression linéaire Ridge")
+    plt.plot(list(range(2,len(semaines)+2)),predictwinter, label="Time Series Holt-Winter")
     plt.ylabel("Quantités")
     plt.xlabel('Semaines')
     plt.title("Comparaison des algorithmes")
@@ -91,10 +98,10 @@ def cmp():
     
     plot_data = quote(base64.b64encode(img.read()).decode())
     
-    livraisons=np.insert(livraisons,35,livraisons[35])
-    predictwinter=np.insert(predictwinter,0,predictwinter[0]) 
-    errquadwinter=round(sqrt(mean_squared_error(predictwinter,livraisons)),2)   
-    return render_template("comparaison.html",plot_url=plot_data,err1=errquadmoy,err2=ecartmoyregr,err3=errquadmewma,err4=errquadwinter)
+    
+    
+      
+    return render_template("comparaison.html",plot_url=plot_data,err1=errquadmoy,err2=ecartmoyregr,err3=errquadmewma,err4=errquadwinter,prevholt=round(predictwinter[35]))
 
 @app.route('/miniup', methods = ['GET', 'POST'])
 def mu():
