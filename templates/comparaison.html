@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Arbitrage des prévisions clients de Johnson Electric et leurs fiabilités</title>
-	  	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	<script src="{{ url_for('static',filename='jquery.js') }}"></script>
 
 		<script src="{{ url_for('static',filename='progressbar2.js') }}"></script>
 		<link rel="stylesheet" href="{{ url_for('static',filename='progressbar.css') }}">
@@ -36,12 +36,12 @@
         <span><a style="margin-bottom:10px" href="/">Retour</a>
         <a id="start" style="margin-bottom:10px;margin-left:850px " href="graphe">Voir les prédictions</a></span>
         <div id="rcorners2" style="margin-left:800px; margin-top:50px; float:left; position:absolute;" >
-        <br> <h1><span>Ecart moyen entre la prédiction calculée et la valeur exacte :</span></h1> 
+        <br> <h1><span>Ecart moyen</span> entre la <span>prédiction calculée</span> et la <span>valeur exacte</span> :</h1> 
         <br><br><br><br><br><br>
         - Estimation à la Moyenne : {{err1}}<br><br><br><br>
         - Estimation à la régression linéaire (Ridge) : {{err2}}<br><br><br><br>
         - Estimation à la Moyenne mobile pondérée : {{err3}}<br><br><br><br>
-        - Estimation à la méthode Holt Winter : {{err4}}<br><br></div><br><br>
+        - Estimation à la méthode Holt Winter : <br><br><br><b style="color:#4DAF7C;">Quantité</b> nécessaire <b style="color:#4DAF7C;">prédite</b> à la <b style="color:#4DAF7C;">37ème</b> semaine : <b style="font-size:30px; color:#4DAF7C;">{{prevholt}}</b>  </div><br><br>
         
       
 
