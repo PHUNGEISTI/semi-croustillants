@@ -116,11 +116,13 @@ def mu():
 def graphe(mini=31):
     datas=formaterXLSX()
     livraisons=list(datas['Livraisons réelles'].values)
-     #Holter's Winter
-    modelholter = ExponentialSmoothing(livraisons,seasonal_periods=35,seasonal='add').fit()
-    #modelholter = ExponentialSmoothing(livraisons,seasonal_periods=35,trend='add',seasonal='add').fit()
-    predictwinter = list(modelholter.forecast(len(livraisons)))
+    for i in range(3,36):
+        #Holter's Winter
+        modelholter = ExponentialSmoothing(livraisons[:i],seasonal_periods=i-1,seasonal='add').fit()
+        #modelholter = ExponentialSmoothing(livraisons,seasonal_periods=35,trend='add',seasonal='add').fit()
+        predictwinter = list(modelholter.forecast(len(livraisons[:i])))
     predictwinter.insert(0,0)
+    print(predictwinter)
     
     mini=mini-1
     img = BytesIO() 
@@ -135,8 +137,9 @@ def graphe(mini=31):
         demandes.append(histo[k])
         
     r= list(range(1,nbsemaines+1))
+    print(r)
     em=[]
-    for i in range(2,35):
+    for i in range(2,35): #attention!!!
         em.append(fullSimul(datas,i))
     
     predR=[]
@@ -144,6 +147,7 @@ def graphe(mini=31):
         predR.append(predireRidge(datas,i))   
     plt.plot(r,livraisons,label="Livraisons réelles")
     plt.plot(r[mini:],predR,label='Modèle linéaire Ridge')
+    plt.plot(r,predictwinter,label='Modèle Holt-Winters')
     plt.ylabel("Quantité")
     plt.xlabel('Semaines')
     plt.title("Prédictions du modèle contre livraisons réelles")
