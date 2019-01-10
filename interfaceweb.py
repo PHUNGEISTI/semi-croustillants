@@ -4,7 +4,9 @@ Interface web
 """
 from formatage import formaterXLSX
 from modele_lin import predireRidge, fullSimul
+import win32com.client
 from win32com.client import Dispatch
+import os,os.path
 import matplotlib.pyplot as plt
 
 from flask import  Flask,render_template,request,redirect
@@ -12,6 +14,8 @@ from io import BytesIO
 import base64
 from urllib.parse import quote
 from werkzeug import secure_filename
+import pythoncom
+
 
 app = Flask(__name__)
 
@@ -26,18 +30,18 @@ from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
 def index():
     return render_template("index.html")
 
-#@app.route('/produit', methods = ['GET', 'POST'])
-#def selectprod():
-#xl = Dispatch("Excel.Application")
- #       xl.Workbooks.Open("H:/Desktop/Projeting2sem1 - TEST/2018-19ProjetJohnsonElectricArbitrageFeuilledecalcul.xlsx")
-  #      xl.ActiveWorkbook.Worksheets('pivot demande').Cells(4,2).Value=89005907
-   #     xl.ActiveWorkbook.Close(SaveChanges=1)
 
 @app.route('/telechargerlexcel', methods = ['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['inputFile']
         f.save(secure_filename(f.filename))
+        prod = int(request.form['prod'])
+        pythoncom.CoInitialize()
+        xl = Dispatch("Excel.Application")
+        xl.Workbooks.Open(os.getcwd()+'/'+f.filename)
+        xl.ActiveWorkbook.Worksheets('pivot demande').Cells(4,2).Value=prod
+        xl.ActiveWorkbook.Close(SaveChanges=1)
         return redirect('/comparaison')
    
 
@@ -122,7 +126,6 @@ def graphe(mini=31):
         #modelholter = ExponentialSmoothing(livraisons,seasonal_periods=35,trend='add',seasonal='add').fit()
         predictwinter = list(modelholter.forecast(len(livraisons[:i])))
     predictwinter.insert(0,0)
-    print(predictwinter)
     
     mini=mini-1
     img = BytesIO() 
@@ -137,7 +140,6 @@ def graphe(mini=31):
         demandes.append(histo[k])
         
     r= list(range(1,nbsemaines+1))
-    print(r)
     em=[]
     for i in range(2,35): #attention!!!
         em.append(fullSimul(datas,i))
