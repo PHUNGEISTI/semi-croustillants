@@ -3,9 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Arbitrage des prévisions clients de Johnson Electric et fiabilité</title>
-		<script src="{{ url_for('static',filename='jquery.js') }}"></script>
-		 <script src="{{ url_for('static',filename='progressbar2.js') }}"></script>
-	 <link rel="stylesheet" href="{{ url_for('static',filename='progressbar.css') }}">
+	<script src="{{ url_for('static',filename='jquery.js') }}"></script>
+	<script src="{{ url_for('static',filename='jszip.js') }}"></script>
+	<script src="{{ url_for('static',filename='FileSaver.js') }}"></script>
+	<script src="{{ url_for('static',filename='myexcel.js') }}"></script>
+	<script>	
+		function createexcel(){
+
+		    var excel = $JExcel.new("Calibri light 10 #333333");			// Default font
+			
+			// excel.set is the main function to generate content:
+			// 		We can use parameter notation excel.set(sheetValue,columnValue,rowValue,cellValue,styleValue) 
+			// 		Or object notation excel.set({sheet:sheetValue,column:columnValue,row:rowValue,value:cellValue,style:styleValue })
+			// 		null or 0 are used as default values for undefined entries		
+			
+			excel.set( {sheet:0,value:"Livraisons Demandes Prédictions" } );
+		   //excel.addSheet("Sheet 2");	
+
+			
+			var evenRow=excel.addStyle ( { 																	
+				border: "none,none,none,thin #333333"});													
+
+			var oddRow=excel.addStyle ( { 																	
+				fill: "#ECECEC" , 																			
+				border: "none,none,none,thin #333333"}); 
+			
+			
+			for (var i=1;i<50;i++) excel.set({row:i,style: i%2==0 ? evenRow: oddRow  });					
+
+ 
+			var headers=["Semaines","Dernière demande","Livraisons réelles","Prédictions Hw","Prédictions Rg"];							
+			var formatHeader=excel.addStyle ( { 		
+					align: "R",			
+					border: "none,none,none,thin #333333", 													
+					font: "Calibri 12 #0000AA B"}); 														
+
+			for (var i=0;i<headers.length;i++){																
+				excel.set(0,i,0,headers[i],formatHeader);													
+				excel.set(0,i,undefined,"auto");															
+			}
+			
+			
+			// on remplit l'excel
+			var sema = {{sem | tojson}}
+			var dem = {{dem | tojson}}
+			var livr = {{liv | tojson}}
+			var predi = {{pred | tojson}}
+			var prevwinter = {{prevwinterr | tojson}}
+			
+			for (var i=0;i<sema.length;i++){																			
+				excel.set(0,0,i+1,sema[i]);																														
+				excel.set(0,1,i+1,dem[i][35]);														
+				excel.set(0,2,i+1,livr[i]);
+				if (prevwinter[i]>0) {
+					excel.set(0,3,i+1,prevwinter[i]);
+					} else {
+						excel.set(0,3,i+1,0);
+					}
+				if ((i >= livr.length-predi.length)&&(predi[i-(livr.length-predi.length)]>=0)) {
+						excel.set(0,4,i+1,predi[i-(livr.length-predi.length)]);
+					} else if ((i >= livr.length-predi.length)&&(predi[i-(livr.length-predi.length)]<0)) {
+						excel.set(0,4,i+1,0);
+					} else if (i < livr.length-predi.length){			
+					excel.set(0,4,i+1," ");																								
+					} 
+			}
+		    excel.generate("Livraisons_Demandes_Prédictions.xlsx");
+		}	
+	</script>
+	<script src="{{ url_for('static',filename='progressbar2.js') }}"></script>		
+	<link rel="stylesheet" href="{{ url_for('static',filename='progressbar.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static',filename='progressbar4.css') }}">
 	<script src="{{ url_for('static',filename='progressbar4.js') }}"></script>
     <link rel="shortcut icon" href="{{ url_for('static',filename='jlicon.ico') }}">
@@ -23,7 +90,7 @@
 			<div class="glow"></div>
 		  </div>
 		</div>
-		<progress id="progressbar" value="0" max="100"></progress> 
+		<progress id="progressbar" value="0" max="100">0%</progress> 
 
         <br>
 		<h1><span>Arbitrage</span> des<span> prévisions clients</span> de <span>Johnson Electric</span> et <span>fiabilité</span></h1>
@@ -34,21 +101,29 @@
             <input placeholder="??????????" style="margin-left:730px; margin-top:90px; float:left; position:absolute; font-family: 'Open Sans', Helvetica;" type="number" name="mini" min="3" max="{{maxhist}}">
             <button id="appli" class="LoadButton" style="margin-left:710px; margin-top:140px; float:left; position:absolute;" type="submit">Appliquer</button>
         </form>
+			<button id="ex" class="LoadButton" style="margin-left:675px; margin-top:385px; float:left; position:absolute;" onclick="createexcel();">Télécharger l'Excel</button>
         <br />
         <br />
-        <img style="margin-left:55px; margin-top:50px; float:left; position:absolute;" src="data:image/png;base64, {{ plot2_url }}">
-        <img style="margin-left:815px; margin-top:50px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
+        <img style="margin-left:55px; margin-top:50px; height:350px; float:left; position:absolute;" src="data:image/png;base64, {{ plot2_url }}">
+        <img style="margin-left:955px; margin-top:50px; height:350px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
         
         
-        <table class="flat-table" style="margin-left:10px; margin-top:500px; float:left; position:absolute;">
+        <table class="flat-table" style="margin-left:10px; margin-top:360px; float:left; position:absolute;">
         <tr>
-            <th>Semaine</th>
+            <th>Semaines</th>
             <script>var sema = {{sem | tojson}}
             for (var i = 0; i < sema.length; i++) {
             document.writeln('<td>'+(i+1)+'</td>')
         }
         </script>
         </tr>
+		<tr>
+            <th>Dernières demandes</th>
+        <script>var dem = {{dem | tojson}}
+        for (var i = 0; i < dem.length; i++) {
+            document.writeln('<td>'+dem[i][35]+'</td>')
+        }
+        </script> </tr><br />
         <tr>
             <th>Livraisons réelles</th>
         <script>var livr = {{liv | tojson}}
@@ -56,19 +131,34 @@
             document.writeln('<td>'+livr[i]+'</td>')
         }
         </script> </tr><br />
-        <th>Prédictions</th>  <script>var predi = {{pred | tojson}}
+		<tr>
+            <th>Prédictions holt-winter</th>
+		<script>var prevwinter = {{prevwinterr | tojson}}
+        for (var i = 0; i < livr.length; i++) {
+			if (prevwinter[i]>0) {
+					document.writeln('<td>'+Math.round(prevwinter[i])+'</td>')
+			} else {
+				document.writeln('<td>'+0+'</td>')
+			}
+        }
+        </script> </tr><br />
+		<tr>
+		<th>Prédictions rég-lin</th>
+		<script>var predi = {{pred | tojson}}
         for (var i = 0; i < livr.length; i++) {
             if (i >= livr.length-predi.length) {
-            document.writeln('<td>'+predi[i-(livr.length-predi.length)]+'</td>')
-        } else {
-            document.writeln('<td></td>')
+				if (predi[i-(livr.length-predi.length)]>=0) {
+					document.writeln('<td>'+Math.round(predi[i-(livr.length-predi.length)])+'</td>')
+				} else if (predi[i-(livr.length-predi.length)]<0) {
+						document.writeln('<td>'+0+'</td>')
+				}
+			} else {
+				document.writeln('<td></td>')
+			}
         }
-        }
-        </script> <br />
+        </script></tr><br />
         </table>
         
-        	
-  		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
 	    <script src="{{ url_for('static',filename='index.js') }}"></script>
 	    <script type="text/javascript">
