@@ -49,8 +49,9 @@ $(document).ready(function() {
 
 			// increment progress bar
 			percent += 0.85;
+			roun=Math.round(percent);
 			$('#load').css('width', percent + '%');
-			$('#load').html(percent + '%');
+			$('#load').html(roun + '%');
 
 
 			// complete

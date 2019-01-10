@@ -15,7 +15,7 @@ $(document).ready(function() {
 			// increment progress bar
 			percent += 1;
 			$('progress').css('width', percent + '%');
-			$('progress').html(percent + '%');
+			$('#progressbar').html(percent + '%');
 
 
 			// complete
