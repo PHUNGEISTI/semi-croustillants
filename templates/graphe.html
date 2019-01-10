@@ -97,15 +97,15 @@
         <span style="margin-top:15px; margin-left:100px; position:absolute;"><a id="start" style="margin-left:100px;" href="comparaison">Retour</a>
             <a style="margin-left:900px; " href="/">Charger un nouvel excel</a></span> 
         <form action="/miniup" method="POST">
-            <h1 style="margin-left:10px; margin-top:40px; float:left; position:absolute; font-weight:bold;">Prédiction à partir de la semaine :</h1>
-            <input placeholder="??????????" style="margin-left:730px; margin-top:90px; float:left; position:absolute; font-family: 'Open Sans', Helvetica;" type="number" name="mini" min="3" max="{{maxhist}}">
+            <h1 style="margin-left:-60px; margin-top:80px; float:left; position:absolute; font-weight:bold;">Prédiction à partir de la semaine :</h1>
+            <input placeholder="31" style="margin-left:950px; margin-top:89px; float:left; position:absolute; font-family: 'Open Sans', Helvetica;" type="number" name="mini" min="3" max="{{maxhist}}">
             <button id="appli" class="LoadButton" style="margin-left:710px; margin-top:140px; float:left; position:absolute;" type="submit">Appliquer</button>
         </form>
 			<button id="ex" class="LoadButton" style="margin-left:675px; margin-top:385px; float:left; position:absolute;" onclick="createexcel();">Télécharger l'Excel</button>
         <br />
         <br />
         <img style="margin-left:55px; margin-top:50px; height:350px; float:left; position:absolute;" src="data:image/png;base64, {{ plot2_url }}">
-        <img style="margin-left:955px; margin-top:50px; height:350px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
+        <img style="margin-left:1030px; margin-top:50px; height:350px; float:left; position:absolute;" src="data:image/png;base64, {{ plot_url }}">
         
         
         <table class="flat-table" style="margin-left:10px; margin-top:360px; float:left; position:absolute;">
