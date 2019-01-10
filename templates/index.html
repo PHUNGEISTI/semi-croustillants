@@ -31,17 +31,16 @@
 			</div>
 		</div>
         <br><br>
-				<h1 style="margin-left:0px; margin-top:100px; float:left; position:absolute; font-weight:bold;">1 - Sélectionner le numéro de produit</h1>
-		<select style="margin-left:700px; margin-top:165px; float:left; position:absolute; " required>
-		<option style="position:absolute; " value="89005907">89005907</option>
-		</select>
+				<h1 style="margin-left:0px; margin-top:195px; float:left; position:absolute; font-weight:bold;">2 - Sélectionner le numéro de produit</h1>
+				
         <Form action="/telechargerlexcel" method="POST" enctype="multipart/form-data">
-		<h1 style="margin-left:0px; margin-top:195px; float:left; position:absolute; font-weight:bold;">2 - Sélectionner le fichier Excel et cliquer sur appliquer</h1>
-        <div style="margin-left:600px; margin-top:260px; float:left; position:absolute;">
+		<input style="margin-left:650px; margin-top:260px; float:left; position:absolute; text-align:center;" value="89005907" name="prod"required/></option>
+		<h1 style="margin-left:0px; margin-top:100px; float:left; position:absolute; font-weight:bold;">1 - Sélectionner le fichier Excel et cliquer sur appliquer</h1>
+        <div style="margin-left:590px; margin-top:165px; float:left; position:absolute;">
 			<input type="file" name="inputFile" class="LoadButton" id="LoadButton" accept=".xlsx" style=" font-weight: 400; font-family: 'Open Sans', Helvetica;" required/>	
         </div>
 				<h1 style="margin-left:0px; margin-top:295px; float:left; position:absolute; font-weight:bold;">3 - Cliquer sur Appliquer</h1>
-        <button id="myButton" style="margin-left:700px; margin-top:360px; float:left; position:absolute;" type="submit" value="Submit" >APPLIQUER</button>
+        <button id="myButton" style="margin-left:698px; margin-top:360px; float:left; position:absolute;" type="submit" value="Submit" >APPLIQUER</button>
         </Form>
 		
 		
