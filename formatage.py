@@ -5,7 +5,7 @@ Fonctions permettant l'import de données xlsx
 
 import numpy as np
 import pandas as pd
-
+from win32com.client import Dispatch
 
 
 def reformaterHisto(df,nbsemaines):
@@ -33,6 +33,7 @@ def formaterXLSX(nomfichier='2018-19ProjetJohnsonElectricArbitrageFeuilledecalcu
     Argument :
         nomfichier -- nom du fichier à importer (string)
     """
+  
     # Ouverture
     df = pd.read_excel(nomfichier,sheet_name='pivot demande')
     # Formatage
