@@ -189,3 +189,10 @@ select:hover {
 	background-color:#4DAF7C;
 }
 
+::placeholder {
+  color: white; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: white;
+}
