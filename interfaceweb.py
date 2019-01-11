@@ -4,7 +4,6 @@ Interface web
 """
 from formatage import formaterXLSX
 from modele_lin import predireRidge, fullSimul
-import win32com.client
 from win32com.client import Dispatch
 import os,os.path
 import matplotlib.pyplot as plt
@@ -24,7 +23,8 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn import linear_model
 from math import sqrt
-from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
+from statsmodels.tsa.api import ExponentialSmoothing
+nomfichierXLS = ""
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -42,12 +42,15 @@ def upload_file():
         xl.Workbooks.Open(os.getcwd()+'/'+f.filename)
         xl.ActiveWorkbook.Worksheets('pivot demande').Cells(4,2).Value=prod
         xl.ActiveWorkbook.Close(SaveChanges=1)
+        global nomfichierXLS
+        nomfichierXLS=f.filename
         return redirect('/comparaison')
    
 
 @app.route('/comparaison')
 def cmp():
-    datas=formaterXLSX()
+    global nomfichierXLS
+    datas=formaterXLSX(nomfichierXLS)
     histo=list(datas['Historique'].values)
     livraisons=list(datas['Livraisons réelles'].values)
     semaines=list(datas['Semaines'].values)
@@ -118,7 +121,8 @@ def mu():
 
 @app.route('/graphe')
 def graphe(mini=31):
-    datas=formaterXLSX()
+    global nomfichierXLS
+    datas=formaterXLSX(nomfichierXLS)
     livraisons=list(datas['Livraisons réelles'].values)
     for i in range(3,36):
         #Holter's Winter

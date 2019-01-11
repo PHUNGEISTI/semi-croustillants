@@ -5,8 +5,6 @@ Fonctions permettant l'import de données xlsx
 
 import numpy as np
 import pandas as pd
-from win32com.client import Dispatch
-
 
 def reformaterHisto(df,nbsemaines):
     """Reformate l'historique de toutes les prévisions de datas
