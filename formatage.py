@@ -56,4 +56,3 @@ def formaterXLSX(nomfichier='2018-19ProjetJohnsonElectricArbitrageFeuilledecalcu
     datas['Livraisons réelles']=livraisons
     datas['Historique']=reformaterHisto(df4,nbsemaines)
     return datas
-
