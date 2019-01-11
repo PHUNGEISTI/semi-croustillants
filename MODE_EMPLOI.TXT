@@ -1,0 +1,17 @@
+MODE D'EMPLOI -- ARBITRAGE JOHNSON ELECTRIC
+
+INSTALLATION
+Installer Python 3.7 ainsi que les dépendances du projet.
+Le plus simple est d'utiliser la distribution Anaconda (https://www.anaconda.com/download/) en version 3.7.
+
+UTILISATION
+1) Lancez l'Anaconda Prompt (ou le terminal Python) puis tapez
+python emplacement_du_fichier_interfaceweb.py
+Par exemple, si le dossier du projet est "H:\Projet", il faudra taper :
+python "H:\Projet\semi-croustillants-master\interfaceweb.py"
+
+[Vous pouvez aisément récupérer l'emplacement du fichier interfaceweb.py en faisant maj+clic-droit sur le fichier dans l'explorateur puis "Copier en tant que chemin d'accès"]
+
+2) Le serveur est lancé. Connectez-vous ensuite sur http://localhost:8085 sur votre navigateur Internet
+
+3) Suivez ensuite les instructions à l'écran
